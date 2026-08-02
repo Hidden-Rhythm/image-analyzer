@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Flask
+instance/
+.webassets-cache
+.env
+.venv
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Uploads
+uploads/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.webp
+*.tiff
+*.json
+*.html
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Vercel
+.vercel/
