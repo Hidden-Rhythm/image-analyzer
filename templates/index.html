@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Upload{% endblock %}
+{% block title %}Upload - Image Analyzer{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <div class="glass-card animate-fade-up">
+        <!-- Upload Card with Slide Animation -->
+        <div class="glass-card slide-left" data-aos="fade-up">
             <div class="glass-card-header">
                 <div class="icon-wrap icon-primary"><i class="fas fa-cloud-upload-alt"></i></div>
                 <h5>Upload Image for Analysis</h5>
@@ -20,7 +21,7 @@
                         <h4>Drop your image here</h4>
                         <p>or click to browse your files</p>
                         <p class="upload-hint">JPG, PNG, GIF, BMP, WebP, TIFF • Max: 50MB</p>
-                        <button class="btn-premium btn-primary-grad mt-3" type="button" onclick="document.getElementById('fileInput').click()">
+                        <button class="btn-premium btn-primary-grad mt-3 magnetic" type="button" onclick="document.getElementById('fileInput').click()">
                             <i class="fas fa-folder-open"></i> Browse Files
                         </button>
                     </div>
@@ -35,28 +36,28 @@
             </div>
         </div>
         
-        <!-- Feature Cards -->
+        <!-- Feature Cards with Float Animation -->
         <div class="row mt-4 g-3">
-            <div class="col-md-3 col-6 animate-fade-up delay-2">
-                <div class="stat-card-pro">
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-card-pro float-card">
                     <div class="stat-value-pro">EXIF</div>
                     <div class="stat-label-pro">Metadata</div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 animate-fade-up delay-3">
-                <div class="stat-card-pro">
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-card-pro float-card">
                     <div class="stat-value-pro">GPS</div>
                     <div class="stat-label-pro">Location</div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 animate-fade-up delay-4">
-                <div class="stat-card-pro">
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-card-pro float-card">
                     <div class="stat-value-pro">ELA</div>
                     <div class="stat-label-pro">Forensics</div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 animate-fade-up delay-5">
-                <div class="stat-card-pro">
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="stat-card-pro float-card">
                     <div class="stat-value-pro">Hash</div>
                     <div class="stat-label-pro">Security</div>
                 </div>
