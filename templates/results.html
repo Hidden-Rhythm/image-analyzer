@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+
+        <!-- Header -->
+        <div class="glass-card animate-fade-up mb-4">
+            <div class="glass-card-body d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h4 class="mb-0">
+                        <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                        {{ results.basic_info.filename }}
+                    </h4>
+                    <small class="text-muted">{{ analysis_date }}</small>
+                </div>
+                <div>
+                    {% if results.manipulation.suspect %}
+                    <span class="badge-pro badge-pro-danger"><i class="fas fa-exclamation-triangle"></i> Suspicious</span>
+                    {% else %}
+                    <span class="badge-pro badge-pro-success"><i class="fas fa-check"></i> Clean</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Image + Info -->
+        <div class="row g-4">
+            <div class="col-md-6 animate-fade-up delay-2">
+                <div class="glass-card">
+                    <div class="glass-card-header">
+                        <div class="icon-wrap icon-info"><i class="fas fa-image"></i></div>
+                        <h5>Image Preview</h5>
+                    </div>
+                    <div class="glass-card-body text-center">
+                        <img src="{{ results.image_data }}" class="img-fluid rounded" alt="Preview" id="searchImage" />
+                        <div class="mt-3">
+                            <span class="badge bg-secondary">{{ results.basic_info.width }} × {{ results.basic_info.height }}</span>
+                            <span class="badge bg-secondary">{{ results.basic_info.file_size_formatted }}</span>
+                            <span class="badge bg-secondary">{{ results.basic_info.format }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 animate-fade-up delay-3">
+                <div class="glass-card">
+                    <div class="glass-card-header">
+                        <div class="icon-wrap icon-success"><i class="fas fa-info-circle"></i></div>
+                        <h5>Basic Information</h5>
+                    </div>
+                    <div class="glass-card-body">
+                        <table class="table-pro">
+                            <tbody>
+                                <tr><th>Filename</th><td>{{ results.basic_info.filename }}</td></tr>
+                                <tr><th>Dimensions</th><td>{{ results.basic_info.width }} × {{ results.basic_info.height }}</td></tr>
+                                <tr><th>Size</th><td>{{ results.basic_info.file_size_formatted }}</td></tr>
+                                <tr><th>Format</th><td>{{ results.basic_info.format }}</td></tr>
+                                <tr><th>Mode</th><td>{{ results.basic_info.mode }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXIF -->
+        {% if results.exif %}
+        <div class="glass-card mt-4 animate-fade-up delay-4">
+            <div class="glass-card-header">
+                <div class="icon-wrap icon-purple"><i class="fas fa-camera"></i></div>
+                <h5>EXIF Metadata</h5>
+                <span class="ms-auto badge bg-secondary">{{ results.exif|length }} sources</span>
+            </div>
+            <div class="glass-card-body">
+                <div class="accordion-pro" id="exifAccordion">
+                    {% for source, data in results.exif.items() %}
+                    {% if source != 'gps' %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#exif{{ loop.index }}">
+                                <i class="fas fa-code me-2" style="color:var(--accent);"></i>
+                                {{ source }} <span class="badge bg-secondary ms-2">{{ data|length }}</span>
+                            </button>
+                        </h2>
+                        <div id="exif{{ loop.index }}" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <table class="table-pro">
+                                    <tbody>
+                                        {% for key, value in data.items() %}
+                                        <tr><th>{{ key }}</th><td>{{ value }}</td></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- GPS -->
+        {% if results.gps %}
+        <div class="glass-card mt-4 animate-fade-up delay-5">
+            <div class="glass-card-header">
+                <div class="icon-wrap icon-danger"><i class="fas fa-map-marker-alt"></i></div>
+                <h5>GPS Location</h5>
+                <span class="ms-auto badge-pro badge-pro-success">Found</span>
+            </div>
+            <div class="glass-card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <table class="table-pro">
+                            <tbody>
+                                <tr><th>Latitude</th><td><strong>{{ results.gps.latitude }}°</strong></td></tr>
+                                <tr><th>Longitude</th><td><strong>{{ results.gps.longitude }}°</strong></td></tr>
+                            </tbody>
+                        </table>
+                        <a href="https://www.google.com/maps?q={{ results.gps.latitude }},{{ results.gps.longitude }}" 
+                           target="_blank" class="btn-premium btn-success-grad btn-sm">
+                            <i class="fas fa-map"></i> Google Maps
+                        </a>
+                    </div>
+                    <div class="col-md-8 mt-3 mt-md-0">
+                        {% if results.map_path %}
+                        <iframe src="/map/{{ results.map_path }}" 
+                                width="100%" 
+                                height="250" 
+                                style="border:0;border-radius:12px;">
+                        </iframe>
+                        {% else %}
+                        <div class="text-muted">Map not available</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Hashes -->
+        <div class="glass-card mt-4 animate-fade-up delay-6">
+            <div class="glass-card-header">
+                <div class="icon-wrap icon-warning"><i class="fas fa-lock"></i></div>
+                <h5>Cryptographic Hashes</h5>
+            </div>
+            <div class="glass-card-body">
+                <div class="row g-2">
+                    {% for algo, hash_value in results.hashes.items() %}
+                    <div class="col-md-6">
+                        <div class="hash-box-pro">
+                            <span class="badge bg-secondary" style="min-width:55px;">{{ algo.upper() }}</span>
+                            <code>{{ hash_value }}</code>
+                            <button class="copy-btn" onclick="copyText('{{ hash_value }}')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Colors -->
+        {% if results.colors and not results.colors.error %}
+        <div class="glass-card mt-4 animate-fade-up delay-7">
+            <div class="glass-card-header">
+                <div class="icon-wrap icon-pink"><i class="fas fa-palette"></i></div>
+                <h5>Color Analysis</h5>
+            </div>
+            <div class="glass-card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table-pro">
+                            <tbody>
+                                <tr>
+                                    <th>Mean Color</th>
+                                    <td>
+                                        <span class="color-swatch-pro" style="background:rgb({{ results.colors.mean_rgb.r }},{{ results.colors.mean_rgb.g }},{{ results.colors.mean_rgb.b }});"></span>
+                                        RGB({{ results.colors.mean_rgb.r }}, {{ results.colors.mean_rgb.g }}, {{ results.colors.mean_rgb.b }})
+                                    </td>
+                                </tr>
+                                <tr><th>Brightness</th><td>{{ results.colors.brightness }}</td></tr>
+                                <tr><th>Entropy</th><td>{{ results.colors.entropy }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table-pro">
+                            <tbody>
+                                <tr><th>Std Dev (R)</th><td>{{ results.colors.std_rgb.r }}</td></tr>
+                                <tr><th>Std Dev (G)</th><td>{{ results.colors.std_rgb.g }}</td></tr>
+                                <tr><th>Std Dev (B)</th><td>{{ results.colors.std_rgb.b }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Manipulation -->
+        <div class="glass-card mt-4 animate-fade-up delay-8">
+            <div class="glass-card-header">
+                <div class="icon-wrap {% if results.manipulation.suspect %}icon-danger{% else %}icon-success{% endif %}">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h5>Manipulation Detection</h5>
+                {% if results.manipulation.suspect %}
+                <span class="ms-auto badge-pro badge-pro-danger">⚠️ Suspicious</span>
+                {% else %}
+                <span class="ms-auto badge-pro badge-pro-success">✅ Clean</span>
+                {% endif %}
+            </div>
+            <div class="glass-card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="stats-grid-pro">
+                            <div class="stat-card-pro">
+                                <div class="stat-value-pro">{{ results.manipulation.confidence }}%</div>
+                                <div class="stat-label-pro">Confidence</div>
+                            </div>
+                            <div class="stat-card-pro">
+                                <div class="stat-value-pro">{{ results.manipulation.ela_score }}</div>
+                                <div class="stat-label-pro">ELA Score</div>
+                            </div>
+                        </div>
+                        {% if not results.manipulation.opencv_available %}
+                        <div class="alert alert-warning mt-3 small">OpenCV not installed</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        {% if results.manipulation.warnings %}
+                        <div class="alert alert-warning">
+                            <strong>Warnings:</strong>
+                            <ul class="warning-list-pro mt-2">
+                                {% for warning in results.manipulation.warnings %}
+                                <li>{{ warning }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-success">No warnings detected</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="glass-card mt-4 animate-fade-up delay-9">
+            <div class="glass-card-header">
+                <div class="icon-wrap icon-primary"><i class="fas fa-search"></i></div>
+                <h5>Reverse Image Search</h5>
+            </div>
+            <div class="glass-card-body">
+                <div class="search-grid-pro">
+                    <a href="https://images.google.com/" target="_blank" class="btn btn-danger">
+                        <i class="fab fa-google"></i> Google
+                    </a>
+                    <a href="https://yandex.com/images/" target="_blank" class="btn btn-warning" style="color:#1A1A2E;">
+                        <i class="fab fa-yandex"></i> Yandex
+                    </a>
+                    <a href="https://tineye.com/" target="_blank" class="btn btn-info">
+                        <i class="fas fa-eye"></i> TinEye
+                    </a>
+                    <a href="https://www.bing.com/images/" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-bing"></i> Bing
+                    </a>
+                    <a href="https://graph.baidu.com/" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-search"></i> Baidu
+                    </a>
+                </div>
+                <div class="mt-3">
+                    <button class="btn-premium btn-success-grad btn-sm" onclick="downloadImage()">
+                        <i class="fas fa-download"></i> Download Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="glass-card mt-4 animate-fade-up">
+            <div class="glass-card-body text-center">
+                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                    <button class="btn-premium btn-primary-grad" onclick="downloadJSON()">
+                        <i class="fas fa-download"></i> JSON
+                    </button>
+                    <button class="btn-premium btn-info-grad" onclick="window.print()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="btn-premium btn-success-grad" onclick="window.location.href='/'">
+                        <i class="fas fa-undo"></i> New
+                    </button>
+                    <button class="btn-premium btn-warning-grad" onclick="copyResults()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function getImageDataUrl() {
+        var img = document.getElementById('searchImage');
+        return img ? img.src : '';
+    }
+
+    function downloadImage() {
+        var img = document.getElementById('searchImage');
+        if (img && img.src) {
+            var link = document.createElement('a');
+            link.download = '{{ results.basic_info.filename }}';
+            link.href = img.src;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Image downloaded ✓', 'success');
+        }
+    }
+
+    function copyResults() {
+        var json = JSON.stringify({{ results|tojson|safe }}, null, 2);
+        copyText(json);
+    }
+
+    function downloadJSON() {
+        var data = JSON.stringify({{ results|tojson|safe }}, null, 2);
+        var blob = new Blob([data], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'results.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('JSON downloaded ✓', 'success');
+    }
+</script>
+{% endblock %}

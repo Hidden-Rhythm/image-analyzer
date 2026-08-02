@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="glass-card animate-fade-up">
+            <div class="glass-card-header">
+                <div class="icon-wrap icon-primary"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h5>Upload Image for Analysis</h5>
+            </div>
+            <div class="glass-card-body">
+                <div id="uploadArea" class="upload-zone">
+                    <input type="file" id="fileInput" accept="image/*" />
+                    <div class="upload-content">
+                        <div class="upload-icon-wrap">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h4>Drop your image here</h4>
+                        <p>or click to browse your files</p>
+                        <p class="upload-hint">JPG, PNG, GIF, BMP, WebP, TIFF • Max: 50MB</p>
+                        <button class="btn-premium btn-primary-grad mt-3" type="button" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loadingSpinner" class="text-center py-4 d-none">
+                    <div class="spinner-pro mx-auto"></div>
+                    <p class="mt-3 text-secondary" id="loadingMessage">Processing your image...</p>
+                </div>
+                
+                <div id="errorMessage" class="alert alert-danger d-none mt-3"></div>
+            </div>
+        </div>
+        
+        <!-- Feature Cards -->
+        <div class="row mt-4 g-3">
+            <div class="col-md-3 col-6 animate-fade-up delay-2">
+                <div class="stat-card-pro">
+                    <div class="stat-value-pro">EXIF</div>
+                    <div class="stat-label-pro">Metadata</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 animate-fade-up delay-3">
+                <div class="stat-card-pro">
+                    <div class="stat-value-pro">GPS</div>
+                    <div class="stat-label-pro">Location</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 animate-fade-up delay-4">
+                <div class="stat-card-pro">
+                    <div class="stat-value-pro">ELA</div>
+                    <div class="stat-label-pro">Forensics</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 animate-fade-up delay-5">
+                <div class="stat-card-pro">
+                    <div class="stat-value-pro">Hash</div>
+                    <div class="stat-label-pro">Security</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var uploadArea = document.getElementById('uploadArea');
+    var fileInput = document.getElementById('fileInput');
+    var loadingSpinner = document.getElementById('loadingSpinner');
+    var errorMessage = document.getElementById('errorMessage');
+    var loadingMessage = document.getElementById('loadingMessage');
+
+    fileInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            handleFile(this.files[0]);
+        }
+        this.value = '';
+    });
+
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            var dt = new DataTransfer();
+            dt.items.add(e.dataTransfer.files[0]);
+            fileInput.files = dt.files;
+            var event = new Event('change', { bubbles: true });
+            fileInput.dispatchEvent(event);
+        }
+    });
+
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+            showError('Please upload an image file.');
+            return;
+        }
+        
+        if (file.size > 50 * 1024 * 1024) {
+            showError('File too large. Maximum 50MB.');
+            return;
+        }
+        
+        uploadArea.style.display = 'none';
+        loadingSpinner.classList.remove('d-none');
+        errorMessage.classList.add('d-none');
+        
+        loadingMessage.textContent = 'Analyzing ' + file.name + '...';
+        
+        var formData = new FormData();
+        formData.append('image', file);
+        
+        fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            loadingSpinner.classList.add('d-none');
+            
+            if (data.error) {
+                showError(data.error);
+                uploadArea.style.display = 'block';
+                return;
+            }
+            
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(function(error) {
+            loadingSpinner.classList.add('d-none');
+            showError('Error: ' + error.message);
+            uploadArea.style.display = 'block';
+        });
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('d-none');
+    }
+</script>
+{% endblock %}
