@@ -168,7 +168,9 @@ function fallbackCopy(text) {
     document.body.removeChild(ta);
 }
 
+// ============================================================
 // ===================== SCROLL REVEAL =====================
+// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     var reveals = document.querySelectorAll('.reveal');
     
@@ -190,7 +192,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', checkReveal);
 });
 
+// ============================================================
 // ===================== TILT CARD EFFECT =====================
+// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     var cards = document.querySelectorAll('.tilt-card');
     
@@ -215,7 +219,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// ============================================================
 // ===================== MAGNETIC BUTTON EFFECT =====================
+// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     var buttons = document.querySelectorAll('.magnetic');
     
@@ -234,6 +240,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// ============================================================
 // ===================== EXPOSE FUNCTIONS =====================
+// ============================================================
 window.showToast = showToast;
 window.copyText = copyText;
+
+// ============================================================
+// ===================== CONSOLE LOG =====================
+// ============================================================
+console.log('🔍 Image Analyzer');
+console.log('   Built by Hidden_Rhythm');
+console.log('   Animations Loaded: ✓');
+console.log('   Particles: ✓');
+console.log('   Scroll Reveal: ✓');
+console.log('   Tilt Cards: ✓');
+console.log('   Magnetic Buttons: ✓');
