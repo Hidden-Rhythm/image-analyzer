@@ -64,6 +64,17 @@ body {
     animation: navSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes navSlide {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .nav-premium .container {
     display: flex;
     justify-content: space-between;
@@ -102,6 +113,11 @@ body {
     animation: logoGlow 3s ease-in-out infinite;
 }
 
+@keyframes logoGlow {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.5; }
+}
+
 .nav-title {
     font-size: 1.2rem;
     font-weight: 700;
@@ -137,6 +153,19 @@ body {
     border-radius: 50%;
     background: var(--success);
     animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.4);
+    }
+    50% { 
+        opacity: 0.6;
+        transform: scale(0.8);
+        box-shadow: 0 0 20px 4px rgba(0, 230, 118, 0.1);
+    }
 }
 
 .nav-status-text {
@@ -259,6 +288,11 @@ body {
     position: relative;
     animation: float-icon 4s ease-in-out infinite;
     box-shadow: 0 0 50px rgba(108, 99, 255, 0.2);
+}
+
+@keyframes float-icon {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-12px) scale(1.02); }
 }
 
 .upload-zone h4 {
@@ -603,6 +637,12 @@ body {
     animation: heart-beat 1.5s ease-in-out infinite;
 }
 
+@keyframes heart-beat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    75% { transform: scale(1.2); }
+}
+
 .footer-text .credit {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
@@ -618,6 +658,17 @@ body {
 /* ===================== TOAST ===================== */
 .toast-pro {
     animation: toast-slide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes toast-slide {
+    from {
+        transform: translateX(100px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
 }
 
 /* ===================== LOADING ===================== */
@@ -636,8 +687,14 @@ body {
 
 /* ===================== ANIMATIONS ===================== */
 @keyframes fade-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-fade-up {
@@ -653,186 +710,6 @@ body {
 .delay-7 { animation-delay: 0.35s; }
 .delay-8 { animation-delay: 0.4s; }
 .delay-9 { animation-delay: 0.45s; }
-
-/* ============================================================
-   ===================== ADVANCED ANIMATIONS =====================
-   ============================================================ */
-
-/* 1. GLOWING TEXT */
-.glow-text {
-    animation: glowPulse 2s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-    0%, 100% { 
-        text-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
-    }
-    50% { 
-        text-shadow: 0 0 30px rgba(108, 99, 255, 0.8), 0 0 60px rgba(108, 99, 255, 0.4);
-    }
-}
-
-/* 2. FLOATING CARDS */
-.float-card {
-    animation: floatCard 4s ease-in-out infinite;
-}
-
-@keyframes floatCard {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
-
-/* 3. SLIDE LEFT */
-.slide-left {
-    animation: slideLeft 0.6s ease-out forwards;
-}
-
-@keyframes slideLeft {
-    from { transform: translateX(-50px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-/* 4. SLIDE RIGHT */
-.slide-right {
-    animation: slideRight 0.6s ease-out forwards;
-}
-
-@keyframes slideRight {
-    from { transform: translateX(50px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-/* 5. SCROLL REVEAL */
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* 6. 3D TILT */
-.tilt-card {
-    transition: transform 0.3s ease;
-    perspective: 1000px;
-}
-
-.tilt-card:hover {
-    transform: rotateX(5deg) rotateY(5deg) scale(1.02);
-}
-
-/* 7. MAGNETIC BUTTONS */
-.magnetic {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.magnetic:hover {
-    transform: scale(1.05) translateY(-5px);
-}
-
-/* 8. BOUNCE IN */
-.bounce-in {
-    animation: bounceIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes bounceIn {
-    0% { transform: scale(0.3); opacity: 0; }
-    50% { transform: scale(1.05); opacity: 1; }
-    70% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-}
-
-/* 9. FLOATING ICON */
-@keyframes float-icon {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-12px) scale(1.02); }
-}
-
-/* 10. HEART BEAT */
-@keyframes heart-beat {
-    0%, 100% { transform: scale(1); }
-    25% { transform: scale(1.2); }
-    75% { transform: scale(1.2); }
-}
-
-/* 11. TOAST SLIDE */
-@keyframes toast-slide {
-    from { transform: translateX(100px) scale(0.9); opacity: 0; }
-    to { transform: translateX(0) scale(1); opacity: 1; }
-}
-
-/* 12. LOGO GLOW */
-@keyframes logoGlow {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 0.5; }
-}
-
-/* 13. NEON ROTATE */
-@keyframes neonRotate {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* 14. ROTATE 360 */
-@keyframes rotate360 {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* 15. FADE SCALE */
-@keyframes fadeScale {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* 16. PULSE DOT */
-@keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.4); }
-    50% { opacity: 0.6; transform: scale(0.8); box-shadow: 0 0 20px 4px rgba(0, 230, 118, 0.1); }
-}
-
-/* 17. NAV SLIDE */
-@keyframes navSlide {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* 18. GLASS PULSE */
-@keyframes glassPulse {
-    0%, 100% { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.06); }
-    50% { background: rgba(255, 255, 255, 0.06); border-color: rgba(108, 99, 255, 0.2); }
-}
-
-/* 19. NEON BORDER */
-.neon-border {
-    position: relative;
-    border: 1px solid transparent;
-}
-
-.neon-border::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
-    background-size: 300% 300%;
-    z-index: -1;
-    animation: neonRotate 4s linear infinite;
-}
-
-/* 20. GLASS PULSE CLASS */
-.glass-pulse {
-    animation: glassPulse 4s ease-in-out infinite;
-}
-
-/* 21. ROTATE ICON */
-.rotate-icon {
-    animation: rotate360 10s linear infinite;
-}
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
