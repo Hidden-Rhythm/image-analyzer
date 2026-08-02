@@ -711,6 +711,153 @@ body {
 .delay-8 { animation-delay: 0.4s; }
 .delay-9 { animation-delay: 0.45s; }
 
+/* ===================== ADVANCED ANIMATIONS ===================== */
+
+/* Glowing Text */
+.glow-text {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { 
+        text-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
+    }
+    50% { 
+        text-shadow: 0 0 30px rgba(108, 99, 255, 0.8), 0 0 60px rgba(108, 99, 255, 0.4);
+    }
+}
+
+/* Floating Cards */
+.float-card {
+    animation: floatCard 4s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Slide In */
+.slide-left {
+    animation: slideLeft 0.6s ease-out forwards;
+}
+
+@keyframes slideLeft {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.slide-right {
+    animation: slideRight 0.6s ease-out forwards;
+}
+
+@keyframes slideRight {
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Bounce In */
+.bounce-in {
+    animation: bounceIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 1; }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* 3D Tilt */
+.tilt-card {
+    transition: transform 0.3s ease;
+    perspective: 1000px;
+}
+
+.tilt-card:hover {
+    transform: rotateX(5deg) rotateY(5deg) scale(1.02);
+}
+
+/* Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Neon Border */
+.neon-border {
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.neon-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+    background-size: 300% 300%;
+    z-index: -1;
+    animation: neonRotate 4s linear infinite;
+}
+
+@keyframes neonRotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Rotating Icon */
+.rotate-icon {
+    animation: rotate360 10s linear infinite;
+}
+
+@keyframes rotate360 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Glass Pulse */
+.glass-pulse {
+    animation: glassPulse 4s ease-in-out infinite;
+}
+
+@keyframes glassPulse {
+    0%, 100% { 
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.06);
+    }
+    50% { 
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(108, 99, 255, 0.2);
+    }
+}
+
+/* Fade Scale */
+.fade-scale {
+    animation: fadeScale 0.6s ease-out forwards;
+}
+
+@keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Magnetic Button */
+.magnetic {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.magnetic:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
     .nav-premium .container {
